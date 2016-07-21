@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>WizardPageOrganization</class>
+ <widget class="QWizardPage" name="WizardPageOrganization">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>682</width>
+    <height>582</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>WizardPage</string>
+  </property>
+  <property name="title">
+   <string>Организация</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>Реквизиты</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_6">
+      <item>
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="3" column="1">
+         <widget class="QLineEdit" name="orgTel"/>
+        </item>
+        <item row="1" column="2">
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>КПП</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>ИНН</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="3">
+         <widget class="QLineEdit" name="orgKPP"/>
+        </item>
+        <item row="3" column="3">
+         <widget class="QLineEdit" name="orgEMail"/>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>Телефон</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="orgINN"/>
+        </item>
+        <item row="0" column="1" colspan="3">
+         <widget class="QLineEdit" name="orgName"/>
+        </item>
+        <item row="3" column="2">
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>E-Mail</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Наименование</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_3">
+     <property name="title">
+      <string>Адрес</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_7">
+      <item>
+       <layout class="QGridLayout" name="gridLayout_3">
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_10">
+          <property name="text">
+           <string>Город</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="3">
+         <widget class="QLineEdit" name="orgRegionCode"/>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="orgCountryCode"/>
+        </item>
+        <item row="0" column="5">
+         <widget class="QLineEdit" name="orgPostalCode"/>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="orgCity"/>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_8">
+          <property name="text">
+           <string>Код страны</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QLabel" name="label_9">
+          <property name="text">
+           <string>Код региона</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="4">
+         <widget class="QLabel" name="label_14">
+          <property name="text">
+           <string>Индекс</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QLabel" name="label_11">
+          <property name="text">
+           <string>Улица</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_12">
+          <property name="text">
+           <string>Дом</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QLineEdit" name="orgBuilding"/>
+        </item>
+        <item row="2" column="2">
+         <widget class="QLabel" name="label_13">
+          <property name="text">
+           <string>Корпус</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="3">
+         <widget class="QLineEdit" name="orgBuildingIndex"/>
+        </item>
+        <item row="1" column="3" colspan="3">
+         <widget class="QLineEdit" name="orgStreet"/>
+        </item>
+        <item row="2" column="4">
+         <widget class="QLabel" name="label_15">
+          <property name="text">
+           <string>Квартира</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="5">
+         <widget class="QLineEdit" name="orgApartment"/>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Должностные лица</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_5">
+      <item>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="headSurname"/>
+        </item>
+        <item row="2" column="1">
+         <widget class="QLineEdit" name="accSurname"/>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_7">
+          <property name="text">
+           <string>Главный бухгалтер</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+           <string>Руководитель</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QLineEdit" name="headName"/>
+        </item>
+        <item row="2" column="2">
+         <widget class="QLineEdit" name="accName"/>
+        </item>
+        <item row="2" column="3">
+         <widget class="QLineEdit" name="accMiddleName"/>
+        </item>
+        <item row="1" column="3">
+         <widget class="QLineEdit" name="headMiddleName"/>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>orgName</tabstop>
+  <tabstop>orgINN</tabstop>
+  <tabstop>orgKPP</tabstop>
+  <tabstop>orgTel</tabstop>
+  <tabstop>orgEMail</tabstop>
+  <tabstop>orgCountryCode</tabstop>
+  <tabstop>orgRegionCode</tabstop>
+  <tabstop>orgPostalCode</tabstop>
+  <tabstop>orgCity</tabstop>
+  <tabstop>orgStreet</tabstop>
+  <tabstop>orgBuilding</tabstop>
+  <tabstop>orgBuildingIndex</tabstop>
+  <tabstop>orgApartment</tabstop>
+  <tabstop>headSurname</tabstop>
+  <tabstop>headName</tabstop>
+  <tabstop>headMiddleName</tabstop>
+  <tabstop>accSurname</tabstop>
+  <tabstop>accName</tabstop>
+  <tabstop>accMiddleName</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>
