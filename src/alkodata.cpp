@@ -30,24 +30,39 @@ AlkoData::~AlkoData()
     QSqlDatabase::removeDatabase("dbData");
 }
 
-void AlkoData::load()
+bool AlkoData::load()
 {
     if (sqlite.isOpen() || sqlite.open()) {
-        loadDB();
+        return loadDB();
     }
+
+    return false;
 }
 
-void AlkoData::save()
+bool AlkoData::save()
 {
     if (sqlite.isOpen() || sqlite.open()) {
-        saveDB();
+        return saveDB();
     }
+
+    return false;
 }
 
-void AlkoData::setDatabase(QString file)
+QString AlkoData::getDatabase() const
 {
-    dbFileName = file;
-    sqlite.setDatabaseName(dbFileName);
+    return dbFileName;
+}
+
+bool AlkoData::setDatabase(QString file)
+{
+    if (! sqlite.isOpen()) {
+        dbFileName = file;
+        sqlite.setDatabaseName(dbFileName);
+
+        return true;
+    }
+
+    return false;
 }
 
 void AlkoData::close()
@@ -551,15 +566,19 @@ Product* AlkoData::searchProduct(uint product_id)
     return NULL;
 }
 
-void AlkoData::loadDB()
+bool AlkoData::loadDB()
 {
         readTables();
+
+        return true;
 }
 
-void AlkoData::saveDB()
+bool AlkoData::saveDB()
 {
         dropTables();
 
         createTables();
         storeData();
+
+        return true;
 }

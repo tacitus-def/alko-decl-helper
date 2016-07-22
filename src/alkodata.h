@@ -35,9 +35,10 @@ class AlkoData
 public:
     AlkoData();
     ~AlkoData();
-    void load();
-    void save();
-    void setDatabase(QString file);
+    bool load();
+    bool save();
+    QString getDatabase() const;
+    bool setDatabase(QString file);
     void close();
     bool isOpen();
 
@@ -98,8 +99,8 @@ private:
     License *searchLicense(uint license_id);
     Product *searchProduct(uint product_id);
 
-    void loadDB();
-    void saveDB();
+    bool loadDB();
+    bool saveDB();
 };
 
 #endif // ALKOSAVEDATA_H
