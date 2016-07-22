@@ -21,6 +21,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+const QString MainWindow::DEFAULT_NAME = "untitled.alko";
+const QString MainWindow::WINDOW_TITLE = "%1 - Помощник Алко-Декларант";
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -30,6 +33,8 @@ MainWindow::MainWindow(QWidget *parent) :
     setupTables();
     connectTableSignals();
     Settings::getInstance()->readIniFile();
+
+    setTitle();
 }
 
 MainWindow::~MainWindow()
@@ -424,12 +429,7 @@ void MainWindow::on_action_import_triggered()
         summary = processor.getSummary();
         oborot = processor.getOborot();
 
-        disconnectTableSignals();
-        fillSummary();
-        fillDetail();
-        fillContragents();
-        fillLicenses();
-        connectTableSignals();
+        fillAllTables();
     }
 
     delete dialogImport;
@@ -437,25 +437,7 @@ void MainWindow::on_action_import_triggered()
 
 void MainWindow::on_action_clear_triggered()
 {
-    inputData.clear();
-
-    oborot.clear();
-    summary.clear();
-    licenses.clear();
-    products.clear();
-    contragents.clear();
-
-    ui->detailTable->clearContents();
-    ui->detailTable->setRowCount(0);
-
-    ui->summaryTable->clearContents();
-    ui->summaryTable->setRowCount(0);
-
-    ui->licensesTable->clearContents();
-    ui->licensesTable->setRowCount(0);
-
-    ui->contragentsTable->clearContents();
-    ui->contragentsTable->setRowCount(0);
+    clearContents();
 }
 
 void MainWindow::on_action_params_triggered()
@@ -730,6 +712,45 @@ uint MainWindow::getContragentNextId() {
     return id;
 }
 
+void MainWindow::setTitle()
+{
+    QString path = alkoData.isOpen() ? alkoData.getDatabase() : DEFAULT_NAME;
+    setWindowTitle(WINDOW_TITLE.arg(path));
+}
+
+void MainWindow::clearContents()
+{
+    inputData.clear();
+
+    oborot.clear();
+    summary.clear();
+    licenses.clear();
+    products.clear();
+    contragents.clear();
+
+    ui->detailTable->clearContents();
+    ui->detailTable->setRowCount(0);
+
+    ui->summaryTable->clearContents();
+    ui->summaryTable->setRowCount(0);
+
+    ui->licensesTable->clearContents();
+    ui->licensesTable->setRowCount(0);
+
+    ui->contragentsTable->clearContents();
+    ui->contragentsTable->setRowCount(0);
+}
+
+void MainWindow::fillAllTables()
+{
+    disconnectTableSignals();
+    fillSummary();
+    fillDetail();
+    fillContragents();
+    fillLicenses();
+    connectTableSignals();
+}
+
 void MainWindow::on_action_triggered()
 {
     QList<ushort> types;
@@ -791,7 +812,7 @@ void MainWindow::on_action_save_triggered()
 {
     bool ok = true;
     if (! alkoData.isOpen()) {
-        QString filename = QFileDialog::getSaveFileName(this, tr("Сохранить"), "", tr("Alko (*.alko)"));
+        QString filename = QFileDialog::getSaveFileName(this, tr("Сохранить"), DEFAULT_NAME, tr("Alko (*.alko)"));
         if (! filename.isEmpty()) {
             alkoData.close();
             alkoData.setDatabase(filename);
@@ -805,7 +826,9 @@ void MainWindow::on_action_save_triggered()
         alkoData.setProducts(products);
         alkoData.setSummary(summary);
 
-        alkoData.save();
+        if (alkoData.save()) {
+            setTitle();
+        }
     }
 }
 
@@ -816,26 +839,24 @@ void MainWindow::on_action_load_triggered()
         alkoData.close();
 
         alkoData.setDatabase(filename);
-        alkoData.load();
+        if (alkoData.load()) {
+            setTitle();
 
-        contragents = alkoData.getContragents();
-        licenses = alkoData.getLicenses();
-        products = alkoData.getProducts();
-        oborot = alkoData.getOborot();
-        summary = alkoData.getSummary();
+            contragents = alkoData.getContragents();
+            licenses = alkoData.getLicenses();
+            products = alkoData.getProducts();
+            oborot = alkoData.getOborot();
+            summary = alkoData.getSummary();
 
-        disconnectTableSignals();
-        fillSummary();
-        fillDetail();
-        fillContragents();
-        fillLicenses();
-        connectTableSignals();
+            fillAllTables();
+        }
     }
 }
 
 void MainWindow::on_action_save_as_triggered()
 {
-    QString filename = QFileDialog::getSaveFileName(this, tr("Сохранить как…"), "", tr("Alko (*.alko)"));
+    QString defaultName = alkoData.getDatabase().isEmpty() ? DEFAULT_NAME : alkoData.getDatabase();
+    QString filename = QFileDialog::getSaveFileName(this, tr("Сохранить как…"), defaultName, tr("Alko (*.alko)"));
     if (! filename.isEmpty()) {
         alkoData.close();
         alkoData.setDatabase(filename);
@@ -846,12 +867,24 @@ void MainWindow::on_action_save_as_triggered()
         alkoData.setProducts(products);
         alkoData.setSummary(summary);
 
-        alkoData.save();
+        if (alkoData.save()) {
+            setTitle();
+        }
     }
 }
 
 void MainWindow::on_action_close_triggered()
 {
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "Сохранение данных", "Вы хотите сохранить данные в файл?", QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
+    if (reply == QMessageBox::Yes) {
+        on_action_save_triggered();
+    }
+    else if (reply == QMessageBox::Cancel) {
+        return;
+    }
     alkoData.close();
     alkoData.setDatabase("");
+    clearContents();
+    setTitle();
 }

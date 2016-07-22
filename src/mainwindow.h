@@ -54,6 +54,9 @@ class MainWindow : public QMainWindow
     Q_OBJECT
     
 public:
+    static const QString DEFAULT_NAME;
+    static const QString WINDOW_TITLE;
+
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     
@@ -121,6 +124,10 @@ private:
     void filterSummaryTable();
     void resetFilterSummaryTable();
     uint getContragentNextId();
+
+    void setTitle();
+    void clearContents();
+    void fillAllTables();
 };
 
 #endif // MAINWINDOW_H
