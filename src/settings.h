@@ -35,12 +35,6 @@ public:
 
     static Settings* getInstance();
 
-    QString getDbFilePath();
-    void setDbFilePath(const QString &value);
-
-    QString getDbPassword();
-    void setDbPassword(const QString &value);
-
     QString getOrgName() const;
     void setOrgName(const QString &value);
 
@@ -115,9 +109,6 @@ public:
 
 private:
     QSettings* settings;
-
-    QString dbFilePath;
-    QString dbPassword;
 
     QString orgName;
     QString orgINN;

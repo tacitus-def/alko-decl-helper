@@ -30,28 +30,23 @@ WizardPageDeclProperties::WizardPageDeclProperties(QWidget *parent) :
     ui->declType->addItem(QIcon(), "Форма №12. Декларация об объемах продажи пива и пивных напитков", QVariant(12));
 
     loadSettings();
+
+    QDate current = QDate::currentDate();
+    current.addMonths(-1);
+    ui->declYear->setDate(current);
+    ui->declQuarter->setCurrentIndex(qCeil(current.month() / 3) - 1);
 }
 
 void WizardPageDeclProperties::loadSettings()
 {
     Settings *settings = Settings::getInstance();
-
-    ui->licSerial->setText(settings->getLicSerial());
-    ui->licNumber->setText(settings->getLicNumber());
-    ui->licStart->setDate(settings->getLicStart());
-    ui->licEnd->setDate(settings->getLicEnd());
-    ui->licType->setCurrentIndex(settings->getLicType());
+    licSerial = settings->getLicSerial();
+    licNumber = settings->getLicNumber();
 }
 
 void WizardPageDeclProperties::saveSettings()
 {
     Settings *settings = Settings::getInstance();
-
-    settings->setLicSerial(ui->licSerial->text());
-    settings->setLicNumber(ui->licNumber->text());
-    settings->setLicStart(ui->licStart->date());
-    settings->setLicEnd(ui->licEnd->date());
-    settings->setLicType(ui->licType->currentIndex());
 
     settings->saveIniFile();
 }
@@ -96,31 +91,6 @@ int WizardPageDeclProperties::getDeclSign()
     return ui->declSign->currentIndex();
 }
 
-int WizardPageDeclProperties::getLicType()
-{
-    return ui->licType->currentIndex();
-}
-
-QString WizardPageDeclProperties::getLicSerial()
-{
-    return ui->licSerial->text();
-}
-
-QString WizardPageDeclProperties::getLicNumber()
-{
-    return ui->licNumber->text();
-}
-
-QDate WizardPageDeclProperties::getLicStart()
-{
-    return ui->licStart->date();
-}
-
-QDate WizardPageDeclProperties::getLicEnd()
-{
-    return ui->licEnd->date();
-}
-
 bool WizardPageDeclProperties::validatePage()
 {
     bool valid = true;
@@ -146,15 +116,17 @@ bool WizardPageDeclProperties::validatePage()
     idx = ui->declType->itemData(ui->declType->currentIndex()).toInt();
 
     if (idx == 11) {
-        valid &= condition = ui->licSerial->text().length() > 0;
-        AlkoHelperInput::highlightError(ui->licSerial, !condition);
+        bool validLic;
+        valid &= validLic = (licNumber.length() > 0) & (licSerial.length() > 0);
 
-        valid &= condition = ui->licNumber->text().length() > 0;
-        AlkoHelperInput::highlightError(ui->licNumber, !condition);
+        if (! validLic) {
+            QMessageBox::warning(this, "Предупреждение", "Не заполнены данные лицензии организации", QMessageBox::Close, 0, 0);
+        }
     }
     else if (idx == 12) {
-        AlkoHelperInput::highlightError(ui->licSerial, false);
-        AlkoHelperInput::highlightError(ui->licNumber, false);
+        /**
+         * @TODO
+         */
     }
 
     if (valid) {

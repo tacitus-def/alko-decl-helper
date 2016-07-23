@@ -21,6 +21,9 @@
 #define WIZARDPAGEDECLPROPERTIES_H
 
 #include <QWizardPage>
+#include <QMessageBox>
+#include <QDateTime>
+#include <QtMath>
 #include "../helpers/alkohelperinput.h"
 #include "../settings.h"
 
@@ -42,15 +45,13 @@ public:
     QString getDeclCorrNumber();
     QString getProvidedFor();
     int getDeclType();
-    QString getLicSerial();
-    QString getLicNumber();
     int getDeclQuarter();
     int getDeclYear();
     int getDeclSign();
-    int getLicType();
-    QDate getLicStart();
-    QDate getLicEnd();
 private:
+    QString licSerial;
+    QString licNumber;
+
     Ui::WizardPageDeclProperties *ui;
     void loadSettings();
     void saveSettings();

@@ -34,7 +34,6 @@
 #include "settings.h"
 #include "product.h"
 #include "oborot.h"
-#include "export/wizardpageorganization.h"
 #include "export/wizardpagedeclproperties.h"
 #include "summary.h"
 
@@ -83,7 +82,7 @@ private:
     QHash<QString,License*> licenses;
     QVector<Product*> products;
 
-    WizardPageOrganization* pageOrg;
+//    WizardPageOrganization* pageOrg;
     WizardPageDeclProperties* pageDecl;
 
     void init();

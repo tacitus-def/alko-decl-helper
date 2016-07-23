@@ -25,7 +25,6 @@ SOURCES += src/main.cpp\
     src/dialogsettings.cpp \
     src/settings.cpp \
     src/wizardexport.cpp \
-    src/export/wizardpageorganization.cpp \
     src/export/wizardpagedeclproperties.cpp \
     src/helpers/alkohelperinput.cpp \
     src/oborot.cpp \
@@ -53,7 +52,6 @@ HEADERS  += src/mainwindow.h \
     src/dialogsettings.h \
     src/settings.h \
     src/wizardexport.h \
-    src/export/wizardpageorganization.h \
     src/export/wizardpagedeclproperties.h \
     src/helpers/alkohelperinput.h \
     src/oborot.h \
@@ -73,7 +71,6 @@ FORMS    += src/mainwindow.ui \
     src/dialogimport.ui \
     src/dialogsettings.ui \
     src/wizardexport.ui \
-    src/export/wizardpageorganization.ui \
     src/export/wizardpagedeclproperties.ui \
     src/dialognewcontragent.ui \
     src/dialognewsummary.ui

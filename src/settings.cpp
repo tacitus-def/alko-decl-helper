@@ -31,9 +31,6 @@ Settings::~Settings()
 
 void Settings::readIniFile()
 {
-    dbFilePath = settings->value("AlkoDB/path", "").toString();
-    dbPassword = settings->value("AlkoDB/password", "").toString();
-
     orgName     = settings->value("Organization/name", "").toString();
     orgINN      = settings->value("Organization/inn", "").toString();
     orgKPP      = settings->value("Organization/kpp", "").toString();
@@ -63,9 +60,6 @@ void Settings::readIniFile()
 
 void Settings::saveIniFile()
 {
-    settings->setValue("AlkoDB/path", dbFilePath);
-    settings->setValue("AlkoDB/password", dbPassword);
-
     settings->setValue("Organization/name", orgName);
     settings->setValue("Organization/inn", orgINN);
     settings->setValue("Organization/kpp", orgKPP);
@@ -100,24 +94,6 @@ Settings *Settings::getInstance()
     return instance;
 }
 
-QString Settings::getDbFilePath()
-{
-    return dbFilePath;
-}
-
-void Settings::setDbFilePath(const QString &value)
-{
-    dbFilePath = value;
-}
-QString Settings::getDbPassword()
-{
-    return dbPassword;
-}
-
-void Settings::setDbPassword(const QString &value)
-{
-    dbPassword = value;
-}
 QString Settings::getOrgName() const
 {
     return orgName;

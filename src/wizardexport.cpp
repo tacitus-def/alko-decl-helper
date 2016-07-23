@@ -36,7 +36,7 @@ WizardExport::WizardExport(QWidget *parent) :
 WizardExport::~WizardExport()
 {
     delete ui;
-    delete pageOrg;
+//    delete pageOrg;
     delete pageDecl;
 }
 
@@ -92,14 +92,15 @@ void WizardExport::setProducts(const QVector<Product *> &value)
 
 void WizardExport::init()
 {
+    settings = Settings::getInstance();
 }
 
 void WizardExport::addPages()
 {
-    pageOrg  = new WizardPageOrganization();
+//    pageOrg  = new WizardPageOrganization();
     pageDecl = new WizardPageDeclProperties();
 
-    setPage(Page_Organization, pageOrg);
+//    setPage(Page_Organization, pageOrg);
     setPage(Page_Declaration, pageDecl);
 }
 
@@ -197,15 +198,15 @@ QDomDocument WizardExport::createXml() {
 //        else {
 //            attrULName = doc.createAttribute("НаимОрг");
 //        }
-        attrULName.setValue(pageOrg->getOrgName());
+        attrULName.setValue(settings->getOrgName());
         rekv.setAttributeNode(attrULName);
 
         QDomAttr attrULTel = doc.createAttribute("ТелОрг");
-        attrULTel.setValue(pageOrg->getOrgTel());
+        attrULTel.setValue(settings->getOrgTel());
         rekv.setAttributeNode(attrULTel);
 
         QDomAttr attrULEmail = doc.createAttribute("EmailОтпр");
-        attrULEmail.setValue(pageOrg->getOrgEMail());
+        attrULEmail.setValue(settings->getOrgEmail());
         rekv.setAttributeNode(attrULEmail);
         /* /Файл/Документ/Организация/Реквизиты/АдрОрг */
         QDomElement addrOrg = doc.createElement("АдрОрг");
@@ -214,9 +215,9 @@ QDomDocument WizardExport::createXml() {
         setAddrOrg(doc, addrOrg);
 
         QDomAttr attrULInn = doc.createAttribute("ИННЮЛ");
-        attrULInn.setValue(pageOrg->getOrgINN());
+        attrULInn.setValue(settings->getOrgINN());
         QDomAttr attrULKpp = doc.createAttribute("КППЮЛ");
-        attrULKpp.setValue(pageOrg->getOrgKPP());
+        attrULKpp.setValue(settings->getOrgKPP());
 //        if (declType == 12) {
             QDomElement ul = doc.createElement("ЮЛ");
             rekv.appendChild(ul);
@@ -250,11 +251,11 @@ QDomDocument WizardExport::createXml() {
     /*  */
     {
         QDomAttr attrULName = doc.createAttribute("Наим");
-        attrULName.setValue(pageOrg->getOrgName());
+        attrULName.setValue(settings->getOrgName());
         orgObiemOborota.setAttributeNode(attrULName);
 
         QDomAttr attrULKpp = doc.createAttribute("КППЮЛ");
-        attrULKpp.setValue(pageOrg->getOrgKPP());
+        attrULKpp.setValue(settings->getOrgKPP());
         orgObiemOborota.setAttributeNode(attrULKpp);
 
         QDomAttr attrNalichOborota = doc.createAttribute("НаличиеОборота");
@@ -276,7 +277,7 @@ QDomDocument WizardExport::createXml() {
 void WizardExport::saveToFile(QDomDocument doc, QString dir) {
     QString fileName = QString("%1_%2_0%3%4_%5_%6.XML")
                         .arg(pageDecl->getDeclType() == 11 ? "R1" : "R2")
-                        .arg(pageOrg->getOrgINN())
+                        .arg(settings->getOrgINN())
                         .arg(QString::number(pageDecl->getDeclQuarter() * 3 % 12))
                         .arg(QString::number(pageDecl->getDeclYear()).mid(3))
                         .arg(QDate::currentDate().toString("ddMMyyyy"))
@@ -324,15 +325,15 @@ void WizardExport::setOrgDeyatelnost(QDomDocument doc, QDomElement root) {
     lic.setAttributeNode(attrVD);
 
     QDomAttr attrSN = doc.createAttribute("СерНомЛиц");
-    attrSN.setValue(pageDecl->getLicSerial() + "," + pageDecl->getLicNumber());
+    attrSN.setValue(settings->getLicSerial() + "," + settings->getLicNumber());
     lic.setAttributeNode(attrSN);
 
     QDomAttr attrSD = doc.createAttribute("ДатаНачЛиц");
-    attrSD.setValue(pageDecl->getLicStart().toString("dd.MM.yyyy"));
+    attrSD.setValue(settings->getLicStart().toString("dd.MM.yyyy"));
     lic.setAttributeNode(attrSD);
 
     QDomAttr attrED = doc.createAttribute("ДатаОконЛиц");
-    attrED.setValue(pageDecl->getLicEnd().toString("dd.MM.yyyy"));
+    attrED.setValue(settings->getLicEnd().toString("dd.MM.yyyy"));
     lic.setAttributeNode(attrED);
 }
 
@@ -672,20 +673,20 @@ void WizardExport::setOrgOtvLitso(QDomDocument doc, QDomElement orgOtvLitso) {
 
     /* /Файл/Документ/Организация/ОтветЛицо/Руководитель/Фамилия */
     QDomElement orgHeadSurname = doc.createElement("Фамилия");
-    if (!pageOrg->getHeadSurname().isEmpty())
-        orgHeadSurname.appendChild(doc.createTextNode(pageOrg->getHeadSurname()));
+    if (!settings->getHeadSurName().isEmpty())
+        orgHeadSurname.appendChild(doc.createTextNode(settings->getHeadSurName()));
     orgHead.appendChild(orgHeadSurname);
 
     /* /Файл/Документ/Организация/ОтветЛицо/Руководитель/Имя */
     QDomElement orgHeadName = doc.createElement("Имя");
-    if (!pageOrg->getHeadName().isEmpty())
-        orgHeadName.appendChild(doc.createTextNode(pageOrg->getHeadName()));
+    if (!settings->getHeadName().isEmpty())
+        orgHeadName.appendChild(doc.createTextNode(settings->getHeadName()));
     orgHead.appendChild(orgHeadName);
 
     /* /Файл/Документ/Организация/ОтветЛицо/Руководитель/Отчество */
     QDomElement orgHeadMiddleName = doc.createElement("Отчество");
-    if (!pageOrg->getHeadMiddleName().isEmpty())
-        orgHeadMiddleName.appendChild(doc.createTextNode(pageOrg->getHeadMiddleName()));
+    if (!settings->getHeadMiddleName().isEmpty())
+        orgHeadMiddleName.appendChild(doc.createTextNode(settings->getHeadMiddleName()));
     orgHead.appendChild(orgHeadMiddleName);
 
     /* /Файл/Документ/Организация/ОтветЛицо/Главбух */
@@ -694,38 +695,38 @@ void WizardExport::setOrgOtvLitso(QDomDocument doc, QDomElement orgOtvLitso) {
 
     /* /Файл/Документ/Организация/ОтветЛицо/Главбух/Фамилия */
     QDomElement orgAccSurname = doc.createElement("Фамилия");
-    if (!pageOrg->getAccSurname().isEmpty())
-        orgAccSurname.appendChild(doc.createTextNode(pageOrg->getAccSurname()));
+    if (!settings->getAccSurName().isEmpty())
+        orgAccSurname.appendChild(doc.createTextNode(settings->getAccSurName()));
     orgAcc.appendChild(orgAccSurname);
 
     /* /Файл/Документ/Организация/ОтветЛицо/Главбух/Имя */
     QDomElement orgAccName = doc.createElement("Имя");
-    if (!pageOrg->getAccName().isEmpty())
-        orgAccName.appendChild(doc.createTextNode(pageOrg->getAccName()));
+    if (!settings->getAccName().isEmpty())
+        orgAccName.appendChild(doc.createTextNode(settings->getAccName()));
     orgAcc.appendChild(orgAccName);
 
     /* /Файл/Документ/Организация/ОтветЛицо/Главбух/Отчество */
     QDomElement orgAccMiddleName = doc.createElement("Отчество");
-    if (!pageOrg->getAccMiddleName().isEmpty())
-        orgAccMiddleName.appendChild(doc.createTextNode(pageOrg->getAccMiddleName()));
+    if (!settings->getAccMiddleName().isEmpty())
+        orgAccMiddleName.appendChild(doc.createTextNode(settings->getAccMiddleName()));
     orgAcc.appendChild(orgAccMiddleName);
 }
 
 void WizardExport::setAddrOrg(QDomDocument doc, QDomElement addrOrg) {
     /* /Файл/Документ/Организация/Реквизиты/АдрОрг/КодСтраны */
     QDomElement orgCountryCode = doc.createElement("КодСтраны");
-    orgCountryCode.appendChild(doc.createTextNode(QString::number(pageOrg->getOrgCountryCode())));
+    orgCountryCode.appendChild(doc.createTextNode(QString::number(settings->getAddrCountryCode())));
     addrOrg.appendChild(orgCountryCode);
 
     /* /Файл/Документ/Организация/Реквизиты/АдрОрг/Индекс */
     QDomElement orgPostalCode = doc.createElement("Индекс");
-    if (!pageOrg->getOrgPostalCode().isEmpty())
-        orgPostalCode.appendChild(doc.createTextNode(pageOrg->getOrgPostalCode()));
+    if (!settings->getAddrPostalCode().isEmpty())
+        orgPostalCode.appendChild(doc.createTextNode(settings->getAddrPostalCode()));
     addrOrg.appendChild(orgPostalCode);
 
     /* /Файл/Документ/Организация/Реквизиты/АдрОрг/КодРегион */
     QDomElement orgRegionCode = doc.createElement("КодРегион");
-    orgRegionCode.appendChild(doc.createTextNode(QString::number(pageOrg->getOrgRegionCode())));
+    orgRegionCode.appendChild(doc.createTextNode(QString::number(settings->getAddrRegionCode())));
     addrOrg.appendChild(orgRegionCode);
 
     /* /Файл/Документ/Организация/Реквизиты/АдрОрг/Район */
@@ -735,7 +736,7 @@ void WizardExport::setAddrOrg(QDomDocument doc, QDomElement addrOrg) {
 
     /* /Файл/Документ/Организация/Реквизиты/АдрОрг/Город */
     QDomElement orgCity = doc.createElement("Город");
-    orgCity.appendChild(doc.createTextNode(pageOrg->getOrgCity()));
+    orgCity.appendChild(doc.createTextNode(settings->getAddrCity()));
     addrOrg.appendChild(orgCity);
 
     /* /Файл/Документ/Организация/Реквизиты/АдрОрг/НаселПункт */
@@ -745,17 +746,17 @@ void WizardExport::setAddrOrg(QDomDocument doc, QDomElement addrOrg) {
 
     /* /Файл/Документ/Организация/Реквизиты/АдрОрг/Улица */
     QDomElement orgStreet = doc.createElement("Улица");
-    orgStreet.appendChild(doc.createTextNode(pageOrg->getOrgStreet()));
+    orgStreet.appendChild(doc.createTextNode(settings->getAddrStreet()));
     addrOrg.appendChild(orgStreet);
 
     /* /Файл/Документ/Организация/Реквизиты/АдрОрг/Дом */
     QDomElement orgBuilding = doc.createElement("Дом");
-    orgBuilding.appendChild(doc.createTextNode(pageOrg->getBuilding()));
+    orgBuilding.appendChild(doc.createTextNode(settings->getAddrBuilding()));
     addrOrg.appendChild(orgBuilding);
 
     /* /Файл/Документ/Организация/Реквизиты/АдрОрг/Корпус */
     QDomElement orgBuildingIndex = doc.createElement("Корпус");
-    orgBuildingIndex.appendChild(doc.createTextNode(pageOrg->getBuildingIndex()));
+    orgBuildingIndex.appendChild(doc.createTextNode(settings->getAddrBuildingIndex()));
     addrOrg.appendChild(orgBuildingIndex);
 
     /* /Файл/Документ/Организация/Реквизиты/АдрОрг/Литера */
@@ -765,6 +766,6 @@ void WizardExport::setAddrOrg(QDomDocument doc, QDomElement addrOrg) {
 
     /* /Файл/Документ/Организация/Реквизиты/АдрОрг/Кварт */
     QDomElement orgApartment = doc.createElement("Кварт");
-    orgApartment.appendChild(doc.createTextNode(pageOrg->getOrgApartment()));
+    orgApartment.appendChild(doc.createTextNode(settings->getAddrApartment()));
     addrOrg.appendChild(orgApartment);
 }

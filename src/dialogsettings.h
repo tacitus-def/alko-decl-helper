@@ -24,6 +24,7 @@
 #include <QVariant>
 #include <QFileInfo>
 #include <QFileDialog>
+#include "helpers/alkohelperinput.h"
 #include "settings.h"
 
 namespace Ui {
@@ -36,13 +37,15 @@ class DialogSettings : public QDialog
 
 public:
     explicit DialogSettings(QWidget *parent = 0);
+    void accept();
     ~DialogSettings();
 
 private slots:
-    void on_btnBrowse_clicked();
-    void on_buttonBox_accepted();
 
 private:
+    bool validatePage();
+    void loadSettings();
+    void saveSettings();
     Ui::DialogSettings *ui;
 };
 

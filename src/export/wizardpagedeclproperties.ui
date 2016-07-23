@@ -152,84 +152,7 @@
      </item>
     </layout>
    </item>
-   <item>
-    <widget class="QGroupBox" name="groupBox_4">
-     <property name="title">
-      <string>Лицензия</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_8">
-      <item>
-       <layout class="QGridLayout" name="gridLayout_4">
-        <item row="1" column="2">
-         <widget class="QLabel" name="label_18">
-          <property name="text">
-           <string>Номер</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QLineEdit" name="licSerial"/>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_17">
-          <property name="text">
-           <string>Серия</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="3">
-         <widget class="QLineEdit" name="licNumber"/>
-        </item>
-        <item row="0" column="1" colspan="3">
-         <widget class="QComboBox" name="licType">
-          <item>
-           <property name="text">
-            <string>Розничная продажа алкогольной продукции</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_16">
-          <property name="text">
-           <string>Вид деятельности</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_19">
-          <property name="text">
-           <string>Дата начала</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QDateEdit" name="licStart">
-          <property name="displayFormat">
-           <string>dd.MM.yyyy</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="2">
-         <widget class="QLabel" name="label_20">
-          <property name="text">
-           <string>Дата окончания</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="3">
-         <widget class="QDateEdit" name="licEnd">
-          <property name="displayFormat">
-           <string>dd.MM.yyyy</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
+  <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -251,11 +174,6 @@
   <tabstop>declYear</tabstop>
   <tabstop>declProvidedFor</tabstop>
   <tabstop>declSign</tabstop>
-  <tabstop>licType</tabstop>
-  <tabstop>licSerial</tabstop>
-  <tabstop>licNumber</tabstop>
-  <tabstop>licStart</tabstop>
-  <tabstop>licEnd</tabstop>
  </tabstops>
  <resources/>
  <connections/>
