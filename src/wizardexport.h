@@ -96,6 +96,7 @@ private:
 
     bool isNotAlcohol(ushort code);
     void saveToFile(QDomDocument doc, QString dir);
+    bool checkDates();
     QDomDocument createXml();
 };
 

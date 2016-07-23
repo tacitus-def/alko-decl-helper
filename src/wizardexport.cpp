@@ -295,9 +295,34 @@ void WizardExport::saveToFile(QDomDocument doc, QString dir) {
     }
 }
 
+bool WizardExport::checkDates()
+{
+    QVectorIterator<Product*> iter(products);
+    QDate sdate, edate;
+    int quarter = pageDecl->getDeclQuarter();
+    int year = pageDecl->getDeclYear();
+    sdate.setDate(year, quarter * 3 - 2, 1);
+    edate.setDate(year, quarter * 3 + 1, 1);
+    edate = edate.addDays(-1);
+    while (iter.hasNext()) {
+        Product* product = iter.next();
+        QDate pdate = product->getDate();
+        if ( pdate < sdate || pdate > edate) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 void WizardExport::wizardFinish(int result)
 {
     if (! result) {
+        return;
+    }
+
+    if (! checkDates()) {
+        QMessageBox::warning(0, "Экспорт декларации", "Экспорт декларации отменен. Обнаружены ТТН с датой, не соответствующей отчетному периоду.");
         return;
     }
 
