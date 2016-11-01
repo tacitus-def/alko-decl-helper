@@ -96,6 +96,7 @@ private slots:
 private:
     DB db;
     AlkoData alkoData;
+    bool dataChanged;
 
     QHash<QPair<ushort,Contragent*>,Summary*> summary;
     Oborot oborot;

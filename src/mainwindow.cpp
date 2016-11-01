@@ -34,6 +34,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connectTableSignals();
     Settings::getInstance()->readIniFile();
 
+    dataChanged = false;
+
     setTitle();
 }
 
@@ -430,6 +432,9 @@ void MainWindow::on_action_import_triggered()
         oborot = processor.getOborot();
 
         fillAllTables();
+
+        dataChanged = true;
+        setTitle();
     }
 
     delete dialogImport;
@@ -438,6 +443,9 @@ void MainWindow::on_action_import_triggered()
 void MainWindow::on_action_clear_triggered()
 {
     clearContents();
+
+    dataChanged = true;
+    setTitle();
 }
 
 void MainWindow::on_action_params_triggered()
@@ -469,7 +477,7 @@ void MainWindow::changeContragentTableCellValue(int row, int column)
     QTableContragentsWidgetItem *item = (QTableContragentsWidgetItem *) ui->contragentsTable->item(row, column);
     Contragent *contragent = item->getContragent();
     QString value = item->text();
-
+    QString oldValue = value;
     switch (column) {
     case 1:
         contragent->setName(value);
@@ -497,6 +505,11 @@ void MainWindow::changeContragentTableCellValue(int row, int column)
     case 7:
         contragent->setCarrier(item->checkState() == Qt::Checked);
         break;
+    }
+
+    if (oldValue != item->text()) {
+        dataChanged = true;
+        setTitle();
     }
 }
 
@@ -528,6 +541,7 @@ void MainWindow::changeSummaryTableCellValue(int row, int column)
 
     Summary *summary = item->getSummary();
     QString value = item->text();
+    QString oldValue = value;
     double result = 0;
 
     disconnectTableSignals();
@@ -599,6 +613,10 @@ void MainWindow::changeSummaryTableCellValue(int row, int column)
         balance_end->setText(QString::number(summary->getBalanceEnd(), 'f', 5));
         break;
     }
+    if (oldValue != item->text()) {
+        dataChanged = true;
+        setTitle();
+    }
     connectTableSignals();
 }
 
@@ -629,6 +647,9 @@ void MainWindow::on_btnNewContragent_clicked()
             disconnectTableSignals();
             fillContragents();
             connectTableSignals();
+
+            dataChanged = true;
+            setTitle();
         }
     }
 
@@ -652,6 +673,9 @@ void MainWindow::on_pushButton_clicked()
                 disconnectTableSignals();
                 fillSummary();
                 connectTableSignals();
+
+                dataChanged = true;
+                setTitle();
             }
         }
         catch (QString s) {
@@ -715,11 +739,12 @@ uint MainWindow::getContragentNextId() {
 void MainWindow::setTitle()
 {
     QString path = alkoData.isOpen() ? alkoData.getDatabase() : DEFAULT_NAME;
-    setWindowTitle(WINDOW_TITLE.arg(path));
+    setWindowTitle(WINDOW_TITLE.arg((dataChanged ? "*" : "") + path));
 }
 
 void MainWindow::clearContents()
 {
+    dataChanged = false;
     inputData.clear();
 
     oborot.clear();
@@ -803,6 +828,9 @@ void MainWindow::on_action_triggered()
         fillSummary();
         fillContragents();
         connectTableSignals();
+
+        dataChanged = true;
+        setTitle();
     }
 
     delete dialogImport;
@@ -827,8 +855,8 @@ void MainWindow::on_action_save_triggered()
         alkoData.setOborot(oborot);
         alkoData.setProducts(products);
         alkoData.setSummary(summary);
-
         if (alkoData.save()) {
+            dataChanged = false;
             setTitle();
         }
     }
@@ -842,6 +870,7 @@ void MainWindow::on_action_load_triggered()
 
         alkoData.setDatabase(filename);
         if (alkoData.load()) {
+            dataChanged = false;
             setTitle();
 
             contragents = alkoData.getContragents();
@@ -870,6 +899,7 @@ void MainWindow::on_action_save_as_triggered()
         alkoData.setSummary(summary);
 
         if (alkoData.save()) {
+            dataChanged = false;
             setTitle();
         }
     }
@@ -878,12 +908,14 @@ void MainWindow::on_action_save_as_triggered()
 void MainWindow::on_action_close_triggered()
 {
     QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this, "Сохранение данных", "Вы хотите сохранить данные в файл?", QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
-    if (reply == QMessageBox::Yes) {
-        on_action_save_triggered();
-    }
-    else if (reply == QMessageBox::Cancel) {
-        return;
+    if (dataChanged) {
+        reply = QMessageBox::question(this, "Сохранение данных", "Вы хотите сохранить данные в файл?", QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
+        if (reply == QMessageBox::Yes) {
+            on_action_save_triggered();
+        }
+        else if (reply == QMessageBox::Cancel) {
+            return;
+        }
     }
     alkoData.close();
     alkoData.setDatabase("");
