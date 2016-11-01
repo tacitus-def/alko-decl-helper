@@ -817,7 +817,9 @@ void MainWindow::on_action_save_triggered()
             alkoData.close();
             alkoData.setDatabase(filename);
         }
-        ok = false;
+        else {
+            ok = false;
+        }
     }
     if (ok) {
         alkoData.setContragents(contragents);
